@@ -1,35 +1,47 @@
-using Celeste.Mod.Hateline.CelesteNet;
+namespace Celeste.Mod.Hateline;
 
-namespace Celeste.Mod.Hateline
+[SettingName("Hateline Settings")]
+public class HatelineModuleSettings : EverestModuleSettings
 {
-    [SettingName("Hateline Settings")]
-    public class HatelineModuleSettings : EverestModuleSettings
-    {
-        private bool _enabled = true;
-        public bool Enabled {
-            get {
-                return _enabled;
-            }
-            set {
-                if(_enabled != value && CelesteNetSupport.loaded)
-                {
-                    // as a notification for other clients of either current hat, or force none when disabled
-                    CelesteNetSupport.CNetComponent?.SendPlayerHat(value ? null : HatelineModule.DEFAULT);
-                }
-                _enabled = value;
-            }
+    private bool _enabled = true;
+    public bool Enabled {
+        get => _enabled;
+        set { _enabled = value;
+            HatelineModule.ReloadHat();
         }
+    }
 
-        public bool AllowMapChanges { get; set; } = true;
-        public bool DontFlip { get; set; } = false;
+    [SettingIgnore]
+    public string SelectedHat { get; set; } = HatelineModule.HAT_NONE;
+    
+    private bool _allowMapChanges = true;
+    public bool AllowMapChanges
+    {
+        get => _allowMapChanges;
+        set { _allowMapChanges = value;
+            HatelineModule.ReloadHat();
+        }
+    }
 
-        [SettingRange(-100, 100, false)]
-        public int CrownX { get; set; } = 0;
+    public bool HatScaling { get; set; } = true;
 
-        [SettingRange(-100, 100, false)]
-        public int CrownY { get; set; } = -8;
-
-        [SettingIgnore]
-        public string SelectedHat { get; set; } = HatelineModule.DEFAULT;
+    private int _crownX = 0;
+    [SettingRange(-100, 100, false)]
+    public int CrownX
+    {
+        get => _crownX;
+        set { _crownX = value; 
+            HatelineModule.ReloadHat();
+        }
+    }
+    
+    private int _crownY = 0;
+    [SettingRange(-100, 100, false)]
+    public int CrownY
+    {
+        get => _crownY;
+        set { _crownY = value;
+            HatelineModule.ReloadHat();
+        }
     }
 }

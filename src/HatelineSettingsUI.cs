@@ -70,7 +70,9 @@ public static class HatelineSettingsUI
                 notEnabledHint.FadeVisible = true;
         };
 
-        Dictionary<string, List<string>> GroupedHats = new();
+        Dictionary<string, List<string>> GroupedHats = new(){
+            { "Hateline",  new()}
+        };
         foreach ((string hat, var attr) in HatelineModule.Instance.HatAttributes)
         {
             string mod = attr["mod"];
